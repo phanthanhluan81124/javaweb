@@ -1,0 +1,172 @@
+/* style text  */
+/* kiểu chữ */
+/* font-size:; kích thước của chữ
+font-weight:; độ đậm của chữ
+font-style:;in nghiên của chữ
+font-family:; kiểu chữ 
+text-align: ; căn chữ 
+text-decoration: underline; gạch chân chữ
+color:; set màu chữ
+backgroup-color:;set màu nền
+border:1px solid black; 1px:kích thước của thanh bo , solid: kiểu bo ;
+*/
+body{
+    font-family: 'Times New Roman', Times, serif !important;
+}
+/* 1. viết hoa tất cả chữ cái đầu */
+#mau1{  
+    text-transform: capitalize;
+    font-weight: 900;
+    font-size: 20px;
+}
+
+/* 2.viết thường */
+#mau2{
+    text-transform: lowercase;
+}
+/* 3. toàn bộ in hoa */
+#mau3{
+    text-transform: uppercase;
+    font-size: 32px;
+    font-weight: 900;
+}
+#mau4{  
+    text-transform: capitalize;
+    font-weight: 400;
+    font-size: 14px;
+}
+#mau5{
+    text-transform: uppercase;
+    font-size: 20px;
+    font-weight: 900;
+}
+#mau6{  
+    text-transform: uppercase;
+    font-weight: 900;
+    font-size: 20px;
+}
+
+/* start container */
+.ALL{
+    width: 100%;
+    height: auto;
+    font-family: 'Inter', sans-serif;
+    font-family: 'Roboto', sans-serif;
+}
+/* end container */
+/* start header */
+.header{
+    width: 100%;
+    height:100px;
+    display: flex;
+    justify-content: space-between;
+}
+.header img{
+    width: 100px;
+    height: 95px;
+}
+.header ul{
+    margin-top: 40px;
+    margin-left:-20px ;
+}
+.header ul li{
+    display: inline;
+    margin-left: 20px;
+}
+.header a{
+    text-decoration: none;
+    color: black;
+}
+.button button,svg{
+    margin-top: 30px;
+    margin-left: 25px;
+}
+.banner{
+    width: 100%;
+    height:300px ;
+    background-color: black;
+}
+.banner img{
+    width: 100%;
+    height: 100%;
+}
+.content{
+    width: 100%;
+    margin-bottom: 50px;
+    color: black;
+    height: auto;
+}
+.content a {
+    text-decoration: none;
+    color: black;
+}
+.content .list_category{
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+.content .list_category .category_item{
+    width: 265px;
+    height: 265px;
+    margin-left: 13px;
+    margin-top: 20px;
+    border-radius: 20px;
+    border: solid 1px #E0D1D1;
+}
+.content .list_category .category_item img{
+    width: 100%;
+    height:200px;
+    border-radius: 20px 20px 0px 0px;
+}
+.content .list_combo{
+    width: 100%;
+    height: auto;
+    display: flex;
+}
+.content .list_combo .combo_item{
+    width: 380px;
+    height: 560px;
+    margin-left: 13px;
+    margin-top: 20px;
+    padding:10px;
+    border: solid 1px #E0D1D1;
+}
+.content .list_combo .combo_item img{
+    width: 100%;
+    height:290px;
+    border-radius: 20px 20px 0px 0px;
+}
+.content .list_combo .combo_item .name{
+    display: flex;
+    justify-content: space-between;
+}
+.footer{
+    width: 100%;
+    height: 510px;
+    padding-left: 50px;
+    padding-right: 50px;
+    background-color: black;
+    color: #fff;
+}
+.footer .list_footer{
+    display: inline-flex;
+    justify-content: space-between;
+    margin-top: 50px;
+    /* padding-left: 50px;
+    padding-right: 50px; */
+    width: 100%;
+    height: 45%;
+    border-bottom: solid 2px #fff;
+}
+.footer .footer_items{
+    width: 250px;
+    height: 200px;
+
+}
+.footer .footer_items ul {
+    list-style: none;
+}
+.footer .footer_items ul li{
+    margin-left: -30px;
+}

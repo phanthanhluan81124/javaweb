@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sản phẩm - KFC Admin Dashboard</title>
+    <meta name="description" content="Quản lý thực đơn các món ăn KFC: Gà rán, Burgers, Đồ uống.">
+    <link rel="stylesheet" href="../cssAdmin/style.css">
+</head>
+<body>
+
+<div class="app-container">
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+    <!-- Sidebar Layout -->
+    <aside class="sidebar">
+        <div class="logo-container">
+            <div class="logo-kfc-stripes">
+                <div class="logo-stripe"></div>
+                <div class="logo-stripe"></div>
+                <div class="logo-stripe"></div>
+            </div>
+            <div class="logo-text">KFC<span>.Admin</span></div>
+        </div>
+
+        <nav class="nav-links">
+            <a href="dashboard.html" class="nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+                Tổng Quan
+            </a>
+            <a href="products.html" class="nav-item active">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                Sản Phẩm
+            </a>
+            <a href="categories.html" class="nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
+                Danh Mục
+            </a>
+
+            <!-- Backup actions -->
+            <div style="margin-top: 24px; padding: 0 12px;">
+                <span style="font-size: 11px; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 1px;">Sao lưu & Phục hồi</span>
+                <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">
+                    <button id="btn-export-data" class="btn btn-secondary" style="width: 100%; font-size: 12px; padding: 8px 12px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: currentColor; margin-right: 4px;"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                        Xuất dữ liệu
+                    </button>
+                    <button id="btn-import-data" class="btn btn-secondary" style="width: 100%; font-size: 12px; padding: 8px 12px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: currentColor; margin-right: 4px;"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
+                        Nhập dữ liệu
+                    </button>
+                    <input type="file" id="import-file-input" accept=".json" style="display: none;">
+                </div>
+            </div>
+        </nav>
+
+        <div class="sidebar-footer">
+            <div class="footer-user">
+                <div class="user-avatar">AD</div>
+                <div class="user-info">
+                    <span class="user-name">KFC Administrator</span>
+                    <span class="user-role">Quản trị viên</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Panel -->
+    <main class="main-content">
+        <div class="mobile-header-bar">
+            <button id="mobile-menu-toggle" class="menu-toggle" aria-label="Open Sidebar">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: currentColor;"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+            </button>
+            <div class="logo-text" style="font-size: 20px;">KFC<span>.Admin</span></div>
+            <div class="user-avatar" style="width: 32px; height: 32px; font-size: 13px;">AD</div>
+        </div>
+
+        <div id="view-container">
+            <div class="top-header">
+                <div class="page-title">
+                    <h1>Danh Sách Sản Phẩm</h1>
+                    <p>Quản lý toàn bộ kho món ăn KFC.</p>
+                </div>
+                <div class="header-actions">
+                    <button id="btn-add-product" class="btn btn-primary">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: currentColor; margin-right: 4px;"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+                        Thêm Mới
+                    </button>
+                </div>
+            </div>
+
+            <!-- Static Controls Panel -->
+            <div class="controls-bar card" style="padding: 16px;">
+                <div class="search-filter-group">
+                    <div class="search-input-wrapper">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                        <input type="text" id="product-search" class="form-control" placeholder="Tìm kiếm món ăn, mã KFC...">
+                    </div>
+
+                    <div style="min-width: 150px;">
+                        <select id="product-filter-category" class="form-control">
+                            <option value="">Tất cả danh mục</option>
+                            <!-- Rendered dynamically -->
+                        </select>
+                    </div>
+
+                    <div style="min-width: 130px;">
+                        <select id="product-filter-status" class="form-control">
+                            <option value="">Tất cả trạng thái</option>
+                            <option value="available">Còn hàng</option>
+                            <option value="out_of_stock">Hết hàng</option>
+                            <option value="discontinued">Ngưng bán</option>
+                        </select>
+                    </div>
+
+                    <div style="min-width: 130px;">
+                        <select id="product-sort" class="form-control">
+                            <option value="name-asc">Tên (A-Z)</option>
+                            <option value="name-desc">Tên (Z-A)</option>
+                            <option value="price-asc">Giá (Thấp-Cao)</option>
+                            <option value="price-desc">Giá (Cao-Thấp)</option>
+                            <option value="stock-asc">Kho (Tăng dần)</option>
+                            <option value="stock-desc">Kho (Giảm dần)</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="view-toggle-group">
+                    <button class="btn-toggle btn-view-mode active" data-mode="table" title="Dạng Bảng">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z"/></svg>
+                    </button>
+                    <button class="btn-toggle btn-view-mode" data-mode="grid" title="Dạng Lưới">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 11h5V5H4v6zm0 8h5v-6H4v6zm7 0h5v-6h-5v6zm8 0h5v-6h-5v6zm-8-8h5V5h-5v6zm8 0h5V5h-5v6z"/></svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Dynamic List rendering -->
+            <div id="products-list-container">
+                <!-- Rendered via JS -->
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- TOAST SHELF -->
+<div id="toast-container" class="toast-container"></div>
+
+<!-- Product Modal Form -->
+<div id="modal-product" class="modal-overlay">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3 id="product-modal-title">Thêm Sản Phẩm KFC Mới</h3>
+            <button class="modal-close" aria-label="Close modal">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor;"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+            </button>
+        </div>
+        <form id="form-product">
+            <div class="modal-body">
+                <input type="hidden" id="product-id" name="id">
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label class="form-label" for="product-code">Mã Món Ăn <span class="required">*</span></label>
+                        <input type="text" id="product-code" class="form-control" placeholder="Ví dụ: KFC-008" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="product-name">Tên Món Ăn <span class="required">*</span></label>
+                        <input type="text" id="product-name" class="form-control" placeholder="Ví dụ: Gà Quay Giấy Bạc" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="product-category">Danh Mục Thực Đơn <span class="required">*</span></label>
+                        <select id="product-category" class="form-control" required>
+                            <!-- Filled dynamically -->
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="product-status">Trạng Thái Kho</label>
+                        <select id="product-status" class="form-control">
+                            <option value="available">Còn hàng</option>
+                            <option value="out_of_stock">Hết hàng</option>
+                            <option value="discontinued">Ngưng kinh doanh</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="product-price">Giá Bán (VND) <span class="required">*</span></label>
+                        <input type="number" id="product-price" class="form-control" min="0" placeholder="Ví dụ: 39000" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="product-stock">Số Lượng Tồn Kho <span class="required">*</span></label>
+                        <input type="number" id="product-stock" class="form-control" min="0" placeholder="Ví dụ: 100" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="product-spicy">Cấp Độ Cay (0-3)</label>
+                        <select id="product-spicy" class="form-control">
+                            <option value="0">Không cay (Mức 0)</option>
+                            <option value="1">Cay nhẹ (Mức 1)</option>
+                            <option value="2">Cay vừa (Mức 2)</option>
+                            <option value="3">Siêu cay (Mức 3)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="product-calories">Kcal (Calories)</label>
+                        <input type="number" id="product-calories" class="form-control" min="0" placeholder="Ví dụ: 320">
+                    </div>
+                    <div class="form-group form-group-full">
+                        <label class="form-label" for="product-image">Đường dẫn hình ảnh (URL)</label>
+                        <input type="url" id="product-image" class="form-control" placeholder="https://images.unsplash.com/...">
+                        <div class="image-preview-box">
+                            <img id="product-img-preview" class="image-preview-img d-none" src="" alt="Hình ảnh sản phẩm">
+                            <div id="product-img-placeholder" class="image-preview-placeholder">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: currentColor;"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+                                <span>Chưa có hình ảnh preview</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group form-group-full">
+                        <label class="form-label" for="product-desc">Mô Tả Sản Phẩm</label>
+                        <textarea id="product-desc" class="form-control" rows="3" placeholder="Mô tả công thức món ăn hoặc thành phần chính..."></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary btn-modal-close">Hủy</button>
+                <button type="submit" class="btn btn-primary">Lưu Thay Đổi</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Confirmation dialog -->
+<div id="modal-confirm" class="modal-overlay">
+    <div class="modal-box modal-sm">
+        <div class="modal-header">
+            <h3 id="confirm-title" style="color: #EF4444;">Xác nhận hành động</h3>
+            <button class="modal-close" aria-label="Close modal">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor;"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p id="confirm-message" style="color: var(--text-gray); font-size: 14px; line-height: 1.6;"></p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-modal-close">Không, hủy bỏ</button>
+            <button type="button" id="confirm-yes" class="btn btn-danger">Vâng, đồng ý</button>
+        </div>
+    </div>
+</div>
+
+<!-- Script module -->
+<script type="module" src="../js/products.js"></script>
+</body>
+</html>

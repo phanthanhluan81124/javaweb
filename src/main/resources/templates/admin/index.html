@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tổng quan - KFC Admin Dashboard</title>
+    <meta name="description" content="Thống kê tổng quan hoạt động và dữ liệu tồn kho thực đơn KFC.">
+    <link rel="stylesheet" href="../cssAdmin/style.css">
+</head>
+<body>
+
+<div class="app-container">
+    <!-- Sidebar Overlay for mobile drawer -->
+    <div id="sidebar-overlay" class="sidebar-overlay"></div>
+
+    <!-- Sidebar Layout -->
+    <aside class="sidebar">
+        <div class="logo-container">
+            <div class="logo-kfc-stripes">
+                <div class="logo-stripe"></div>
+                <div class="logo-stripe"></div>
+                <div class="logo-stripe"></div>
+            </div>
+            <div class="logo-text">KFC<span>.Admin</span></div>
+        </div>
+
+        <nav class="nav-links">
+            <a href="dashboard.html" class="nav-item active">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+                Tổng Quan
+            </a>
+            <a href="products.html" class="nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                Sản Phẩm
+            </a>
+            <a href="categories.html" class="nav-item">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
+                Danh Mục
+            </a>
+
+            <!-- Backup actions -->
+            <div style="margin-top: 24px; padding: 0 12px;">
+                <span style="font-size: 11px; text-transform: uppercase; color: var(--text-muted); font-weight: 700; letter-spacing: 1px;">Sao lưu & Phục hồi</span>
+                <div style="display: flex; flex-direction: column; gap: 8px; margin-top: 10px;">
+                    <button id="btn-export-data" class="btn btn-secondary" style="width: 100%; font-size: 12px; padding: 8px 12px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: currentColor; margin-right: 4px;"><path d="M19 9h-4V3H9v6H5l7 7 7-7zM5 18v2h14v-2H5z"/></svg>
+                        Xuất dữ liệu
+                    </button>
+                    <button id="btn-import-data" class="btn btn-secondary" style="width: 100%; font-size: 12px; padding: 8px 12px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: currentColor; margin-right: 4px;"><path d="M9 16h6v-6h4l-7-7-7 7h4zm-4 2h14v2H5z"/></svg>
+                        Nhập dữ liệu
+                    </button>
+                    <input type="file" id="import-file-input" accept=".json" style="display: none;">
+                </div>
+            </div>
+        </nav>
+
+        <!-- Sidebar User Section -->
+        <div class="sidebar-footer">
+            <div class="footer-user">
+                <div class="user-avatar">AD</div>
+                <div class="user-info">
+                    <span class="user-name">KFC Administrator</span>
+                    <span class="user-role">Quản trị viên</span>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content Panel -->
+    <main class="main-content">
+        <!-- Mobile Top Bar -->
+        <div class="mobile-header-bar">
+            <button id="mobile-menu-toggle" class="menu-toggle" aria-label="Open Sidebar">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: currentColor;"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+            </button>
+            <div class="logo-text" style="font-size: 20px;">KFC<span>.Admin</span></div>
+            <div class="user-avatar" style="width: 32px; height: 32px; font-size: 13px;">AD</div>
+        </div>
+
+        <!-- View Container Content -->
+        <div id="view-container">
+            <div class="top-header">
+                <div class="page-title">
+                    <h1>Tổng Quan Cửa Hàng</h1>
+                    <p>Dữ liệu hoạt động hệ thống quản trị KFC.</p>
+                </div>
+                <div class="header-actions">
+                    <button id="btn-quick-log-clear" class="btn btn-secondary">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 16px; height: 16px; fill: currentColor; margin-right: 4px;"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+                        Xóa Lịch Sử
+                    </button>
+                </div>
+            </div>
+
+            <!-- Stats KPIs Grid -->
+            <div class="stats-grid">
+                <div class="card stat-card">
+                    <div class="stat-icon-box red">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                    </div>
+                    <div class="stat-details">
+                        <span id="kpi-products" class="stat-value">0</span>
+                        <span class="stat-label">Sản Phẩm</span>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon-box yellow">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: currentColor;"><path d="M4 6H2v14c0 1.1.9 2 2 2h14v-2H4V6zm16-4H8c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H8V4h12v12z"/></svg>
+                    </div>
+                    <div class="stat-details">
+                        <span id="kpi-categories" class="stat-value">0</span>
+                        <span class="stat-label">Danh Mục</span>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon-box green">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 1.04-.42 1.99-1.07 2.75z"/></svg>
+                    </div>
+                    <div class="stat-details">
+                        <span id="kpi-stock" class="stat-value">0</span>
+                        <span class="stat-label">Tồn Kho Tổng</span>
+                    </div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-icon-box blue">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 24px; height: 24px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>
+                    </div>
+                    <div class="stat-details">
+                        <span id="kpi-out-of-stock" class="stat-value" style="color: #EF4444;">0</span>
+                        <span class="stat-label">Hết Hàng</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Charts & Logs Layout -->
+            <div class="dashboard-grid">
+                <!-- Analytics Chart -->
+                <div class="card">
+                    <div class="dashboard-title-bar">
+                        <h3>Sản Phẩm Theo Danh Mục</h3>
+                    </div>
+                    <div id="chart-container" class="chart-container">
+                        <!-- Rendered via JS -->
+                    </div>
+                </div>
+
+                <!-- Recent Logs -->
+                <div class="card">
+                    <div class="dashboard-title-bar">
+                        <h3>Hoạt Động Gần Đây</h3>
+                        <span class="badge badge-success">Live</span>
+                    </div>
+                    <div id="logs-list" class="logs-list">
+                        <!-- Rendered via JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Low Stock Warnings -->
+            <div class="card mt-4">
+                <div class="dashboard-title-bar">
+                    <h3 style="color: var(--accent-yellow); display: flex; align-items: center; gap: 8px;">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor;"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                        Cảnh Báo Sắp Hết Hàng
+                    </h3>
+                    <span id="kpi-lowstock-badge" class="badge badge-warning d-none">0 sản phẩm</span>
+                </div>
+                <div id="low-stock-container" class="logs-list" style="max-height: 180px;">
+                    <!-- Rendered via JS -->
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- TOAST SHELF -->
+<div id="toast-container" class="toast-container"></div>
+
+<!-- Confirmation dialog -->
+<div id="modal-confirm" class="modal-overlay">
+    <div class="modal-box modal-sm">
+        <div class="modal-header">
+            <h3 id="confirm-title" style="color: #EF4444;">Xác nhận hành động</h3>
+            <button class="modal-close" aria-label="Close modal">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor;"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+            </button>
+        </div>
+        <div class="modal-body">
+            <p id="confirm-message" style="color: var(--text-gray); font-size: 14px; line-height: 1.6;"></p>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary btn-modal-close">Không, hủy bỏ</button>
+            <button type="button" id="confirm-yes" class="btn btn-danger">Vâng, đồng ý</button>
+        </div>
+    </div>
+</div>
+
+<!-- Dashboard Script module -->
+<script type="module" src="../js/dashboard.js"></script>
+</body>
+</html>

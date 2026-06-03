@@ -1,0 +1,155 @@
+/* style text  */
+#mau1{  
+    text-transform: capitalize;
+    font-weight: 900;
+    font-size: 20px;
+}
+
+/* 2.viết thường */
+#mau2{
+    text-transform: lowercase;
+}
+/* 3. toàn bộ in hoa */
+#mau3{
+    text-transform: uppercase;
+    font-size: 32px;
+    font-weight: 900;
+}
+#mau4{  
+    text-transform: capitalize;
+    font-weight: 400;
+    font-size: 14px;
+}
+#mau5{
+    text-transform: uppercase;
+    font-size: 20px;
+    font-weight: 900;
+}
+#mau6{  
+    text-transform: uppercase;
+    font-weight: 900;
+    font-size: 20px;
+}
+
+/* start container */
+.ALL{
+    width: 100%;
+    height: auto;
+    font-family: 'Inter', sans-serif;
+    font-family: 'Roboto', sans-serif;
+}
+/* end container */
+/* start header */
+.header{
+    width: 100%;
+    height:100px;
+    border-bottom:solid 1px black ;
+    display: flex;
+    justify-content: space-between;
+}
+.header img{
+    width: 100px;
+    height: 100px;
+}
+.header ul{
+    margin-top: 40px;
+    margin-left:-20px ;
+}
+.header ul li{
+    display: inline;
+    margin-left: 20px;
+}
+.header a{
+    text-decoration: none;
+    color: black;
+}
+.button button,svg{
+    margin-top: 30px;
+    margin-left: 25px;
+}
+/* end header */
+/* start banner */
+.banner{
+    width: 100%;
+    height: 350px;
+    background-color: black;
+    color: #fff;
+    text-align: center;
+}
+/* end banner */
+/* start content */
+.content{
+    padding-left: 50px;
+    padding-right: 50px;
+}
+.content .title{
+    width: 100%;
+    height: 80px;
+    border-bottom: 2px solid black;
+}
+.content h1{
+    text-align: center;
+    margin-top: 40px;
+}
+.content .content_items{
+    width: 100%;
+    height: 300px;
+    margin-top: 30px;
+    display: inline-flex;
+}
+.content_items .content_items_1{
+    padding-left: 50px;
+}
+.content_items .content_items_2{
+    padding-right: 50px;
+}
+.content_items p{
+    width: 60%;
+    height: 100%;
+}
+.content_items img{
+    width: 40%;
+    height: 100%;
+}
+.content_item{
+    width: 100%;
+    height: 650px;
+}
+.content_item .image{
+    width: 100%;
+    height:450px;
+    background-image: url(../../templates/image/banner-2.jpg);
+}
+.content_item p{
+    margin-top: 20px;
+}
+.footer{
+    width: 100%;
+    height: 510px;
+    padding-left: 50px;
+    padding-right: 50px;
+    background-color: black;
+    color: #fff;
+}
+.footer .list_footer{
+    display: inline-flex;
+    justify-content: space-between;
+    margin-top: 50px;
+    width: 100%;
+    height: 45%;
+    border-bottom: solid 2px #fff;
+}
+.footer .footer_items{
+    width: 250px;
+    height: 200px;
+
+}
+
+.footer .footer_items ul {
+    list-style: none;
+}
+.footer .footer_items ul li{
+    margin-left: -30px;
+}
+
+/* end content */
