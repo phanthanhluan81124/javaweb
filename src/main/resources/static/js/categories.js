@@ -225,7 +225,7 @@ function setupDynamicListeners() {
       if (updateNameInput) {
         updateNameInput.value = name || '';
       }
-
+      console.log(image);
       // Hiển thị ảnh cũ nếu tồn tại
       if (previewImg) {
         if (image) {

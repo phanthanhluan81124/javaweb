@@ -1371,3 +1371,53 @@ select.form-control {
 .mt-4 { margin-top: 16px; }
 .mr-2 { margin-right: 8px; }
 .font-bold { font-weight: 700; }
+
+/* KFC Admin Alert Banner styles */
+.alert-banner {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  border-radius: var(--button-radius);
+  margin-top: 16px;
+  margin-bottom: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  border: 1px solid transparent;
+  box-shadow: var(--shadow-md);
+  animation: slideDownFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.alert-banner-success {
+  background-color: rgba(16, 185, 129, 0.08);
+  border-color: rgba(16, 185, 129, 0.2);
+  color: var(--accent-green);
+  box-shadow: 0 4px 15px rgba(16, 185, 129, 0.05);
+}
+.alert-banner-danger {
+  background-color: rgba(196, 18, 48, 0.08);
+  border-color: rgba(196, 18, 48, 0.2);
+  color: var(--primary-red-hover);
+  box-shadow: 0 4px 15px rgba(196, 18, 48, 0.05);
+}
+.alert-banner-icon {
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+}
+.alert-banner-message {
+  flex-grow: 1;
+}
+@keyframes slideDownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

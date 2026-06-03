@@ -52,11 +52,11 @@ public class AdminController {
         category.setImage(imageName);
         Boolean exitsCategory = categoryService.existCategory(category.getTen());
         if(exitsCategory){
-            session.setAttribute("error","category name already exit");
+            session.setAttribute("error","Tên danh mục đã toàn tại");
         }else{
             Category saveCategory = categoryService.saveCategory(category);
             if(ObjectUtils.isEmpty(saveCategory)){
-                session.setAttribute("error","not save category");
+                session.setAttribute("error","Thêm danh muc thất bại");
             }else{
                 if (file != null && !file.isEmpty()) {
                     File saveFile = new ClassPathResource("static").getFile();
@@ -70,7 +70,7 @@ public class AdminController {
                     Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
                 }
 
-                session.setAttribute("success","success save category");
+                session.setAttribute("success","Thêm danh mục thành công");
 
             }
         }
@@ -82,25 +82,37 @@ public class AdminController {
     public String deleteCategory(@PathVariable int id,HttpSession session){
         Boolean deleteCategory = categoryService.deleteCategory(id);
         if(deleteCategory) {
-            session.setAttribute("success","delete category success");
+            session.setAttribute("success","Xóa danh mục thành công");
         }else{
-            session.setAttribute("error","not delete category");
+            session.setAttribute("error","Xóa danh mục thất bại");
         }
         return  "redirect:/admin/category";
     }
     @PostMapping("/updateCategory")
-    public String updateCategory(@ModelAttribute Category category, @RequestParam("file") MultipartFile file,HttpSession session){
+    public String updateCategory(@ModelAttribute Category category, @RequestParam("file") MultipartFile file,HttpSession session) throws IOException {
         Category category1 = categoryService.getCategory(category.getId());
-        String imageName = (file!=null && !file.isEmpty()) ? file.getOriginalFilename():category1.getImage();
-        if(ObjectUtils.isEmpty(category1)){
+        String imageName = file.isEmpty() ? category1.getImage():file.getOriginalFilename();
+        if(!ObjectUtils.isEmpty(category1)){
             category1.setTen(category.getTen());
             category1.setImage(imageName);
         }
         Category updateCategory = categoryService.saveCategory(category1);
-        if(ObjectUtils.isEmpty(updateCategory)){
-            session.setAttribute("success","update category success");
+
+        if(!ObjectUtils.isEmpty(updateCategory)){
+            if (file != null && !file.isEmpty()) {
+                File saveFile = new ClassPathResource("static").getFile();
+
+                Path uploadDir = Paths.get(saveFile.getAbsolutePath(), "img", "category_img");
+
+                if (!Files.exists(uploadDir)) {
+                    Files.createDirectories(uploadDir);
+                }
+                Path path = uploadDir.resolve(file.getOriginalFilename());
+                Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+            }
+            session.setAttribute("success","Sửa danh mục thành công");
         }else{
-            session.setAttribute("error","update category fail");
+            session.setAttribute("error","Sửa danh mục thất bại");
         }
 
         return  "redirect:/admin/category";

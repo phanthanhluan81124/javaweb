@@ -80,14 +80,18 @@
                 <div class="page-title">
                     <h1>Danh Mục Sản Phẩm</h1>
                     <p>Cơ cấu thực đơn các nhóm món ăn KFC.</p>
-                    <th:block th:if="${session.success}">
-                        <p class="text-success fw-bold">[[${session.success}]]</p>
-                        <th:block th:text="${@commonServicelmpl.removeSessionMessage()}"></th:block>
-                    </th:block>
-                    <th:block th:if="${session.error}">
-                        <p class="text-danger fw-bold">[[${session.error}]]</p>
-                        <th:block th:text="${@commonServicelmpl.removeSessionMessage()}"></th:block>
-                    </th:block>
+                    <div th:if="${session.success}" class="alert-banner alert-banner-success">
+                        <div class="alert-banner-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg>
+                        </div>
+                        <div class="alert-banner-message">[[${session.success}]]</div>
+                    </div>
+                    <div th:if="${session.error}" class="alert-banner alert-banner-danger">
+                        <div class="alert-banner-icon">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="20" height="20" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                        </div>
+                        <div class="alert-banner-message">[[${session.error}]]</div>
+                    </div>
                 </div>
                 <div class="header-actions">
                     <button id="btn-add-category" class="btn btn-primary">
@@ -133,7 +137,7 @@
                         <div class="category-card-footer">
                             <span class="category-prod-count">Gồm: <strong>2</strong> sản phẩm</span>
                             <div class="action-buttons">
-                                <button class="action-btn btn-edit-active btn-edit-category" th:data-id="${cat.id}" th:data-name="${cat.ten}" title="Chỉnh Sửa" id="btn-update-category">
+                                <button class="action-btn btn-edit-active btn-edit-category" th:data-id="${cat.id}" th:data-name="${cat.ten}" th:data-image="${cat.image}" title="Chỉnh Sửa" id="btn-update-category">
                                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path></svg>
                                 </button>
                                 <a th:href="@{'/admin/deleteCategory/'+${cat.id}}"><button class="action-btn btn-delete-active btn-delete-category" th:data-id="${cat.id}" title="Xóa">
@@ -186,7 +190,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor;"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
             </button>
         </div>
-        <form id="form-update-category" action="/admin/saveCategory" method="post" enctype="multipart/form-data">
+        <form id="form-update-category" action="/admin/updateCategory" method="post" enctype="multipart/form-data">
             <div class="modal-body">
                 <input type="hidden" name="id" id="category-update-id">
                 <div class="form-group">
@@ -196,7 +200,9 @@
                 <div class="form-group">
                     <label class="form-label" for="category-desc1">Ảnh</label>
                     <input type="file" name="file"  class="form-control">
-
+                    <div style="margin-top: 10px;">
+                        <img id="category-update-image-preview" src="" alt="Ảnh hiện tại" style="max-width: 120px; max-height: 120px; object-fit: cover; border-radius: 4px; border: 1px solid #ddd; display: none;">
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
