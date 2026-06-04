@@ -3,7 +3,9 @@ package com.example.demo.controller;
 import com.example.demo.model.Category;
 //import com.example.demo.repository.CategoryRepository;
 //import com.example.demo.service.CategoryService;
+import com.example.demo.model.Product;
 import com.example.demo.service.CategoryService;
+import com.example.demo.service.ProductService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
@@ -24,9 +26,11 @@ import java.nio.file.StandardCopyOption;
 @RequestMapping("admin")
 public class AdminController {
     private final CategoryService categoryService;
+    private final ProductService productService;
 
-    public AdminController(CategoryService categoryService) {
+    public AdminController(CategoryService categoryService, ProductService productService) {
         this.categoryService = categoryService;
+        this.productService = productService;
     }
 
 //    @Autowired
@@ -36,7 +40,7 @@ public class AdminController {
     public String index(){
         return "admin/index";
     }
-    @GetMapping("/loadAddProduct")
+    @GetMapping("/product")
     public String loadAddProduct(){
         return "admin/add_product";
     }
@@ -117,4 +121,48 @@ public class AdminController {
 
         return  "redirect:/admin/category";
     }
+
+    @PostMapping("add-product")
+    public String saveProduct(@ModelAttribute Product product, @RequestParam("file") MultipartFile file, HttpSession session) throws IOException {
+        String imageName = (file!=null && !file.isEmpty()) ? file.getOriginalFilename():"default.jpg";
+        product.setImage(imageName);
+        Boolean exitsProduct = productService.existProduct(product.getTen());
+        if(exitsProduct){
+            session.setAttribute("error","Tên sản phẩm bị trùng");
+        }else{
+            Product saveProduct = productService.saveProduct(product);
+            if(ObjectUtils.isEmpty(saveProduct)){
+                session.setAttribute("error","Thêm sản phẩm thất bại");
+            }else{
+                if (file != null && !file.isEmpty()) {
+                    File saveFile = new ClassPathResource("static").getFile();
+
+                    Path uploadDir = Paths.get(saveFile.getAbsolutePath(), "img", "category_img");
+
+                    if (!Files.exists(uploadDir)) {
+                        Files.createDirectories(uploadDir);
+                    }
+                    Path path = uploadDir.resolve(file.getOriginalFilename());
+                    Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+                }
+                session.setAttribute("success","Thêm sản phẩm thành công");
+            }
+        }
+        return  "redirect:/admin/product";
+    }
+    @GetMapping("/deleteProduct/{id}")
+    public String deleteProduct(@PathVariable int id, HttpSession session){
+        Boolean deleteProduct = productService.deleteProduct(id);
+        if(deleteProduct){
+            session.setAttribute("success","Xóa sản phẩm thành công");
+        }else{
+            session.setAttribute("error","Xóa sản phẩm thất bại");
+        }
+        return  "redirect:/admin/product";
+    }
+
+
+
+
+
 }
