@@ -1,5 +1,6 @@
 package com.example.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,15 +16,21 @@ import java.time.OffsetDateTime;
 @Getter
 @Setter
 @Entity
-@Table(name="Category")
-public class Category {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    @Column(name = "ten")
-    private String ten;
-    @Column(name = "image")
-    private String image;
+@Table(name="product_category")
+public class Product_Category {
+    @EmbeddedId
+    private ProductCategoryId id = new ProductCategoryId();
+
+    @ManyToOne
+    @MapsId("idProduct")
+    @JoinColumn(name = "id_product")
+    private Product product;
+
+    @ManyToOne
+    @MapsId("idCategory")
+    @JoinColumn(name = "id_category")
+    private Category category;
+
     @CreationTimestamp
     @Column(name = "created_at",updatable = false, nullable = false,columnDefinition = "datetimeoffset")
     private OffsetDateTime create_at;
@@ -32,4 +39,5 @@ public class Category {
     private OffsetDateTime updated_at;
     @Column(name = "deleted_at",columnDefinition = "datetimeoffset")
     private OffsetDateTime deleted_at;
+
 }

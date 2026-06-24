@@ -5,8 +5,10 @@ import com.example.demo.model.Category;
 //import com.example.demo.service.CategoryService;
 import com.example.demo.model.Product;
 import com.example.demo.service.CategoryService;
+import com.example.demo.service.ProductCategoryService;
 import com.example.demo.service.ProductService;
 import jakarta.servlet.http.HttpSession;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.stereotype.Controller;
@@ -21,16 +23,19 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 
 @Controller
 @RequestMapping("admin")
 public class AdminController {
     private final CategoryService categoryService;
     private final ProductService productService;
+    private final ProductCategoryService productCategoryService;
 
-    public AdminController(CategoryService categoryService, ProductService productService) {
+    public AdminController(CategoryService categoryService, ProductService productService, ProductCategoryService productCategoryService) {
         this.categoryService = categoryService;
         this.productService = productService;
+        this.productCategoryService = productCategoryService;
     }
 
 //    @Autowired
@@ -41,7 +46,10 @@ public class AdminController {
         return "admin/index";
     }
     @GetMapping("/product")
-    public String loadAddProduct(){
+    public String loadAddProduct(Model m,Model p, Model c){
+        m.addAttribute("category",categoryService.getAllCategory());
+        p.addAttribute("product", productService.getAllProduct());
+        c.addAttribute("product_category",productCategoryService.getAllProductCategory());
         return "admin/add_product";
     }
     @GetMapping("/category")
@@ -81,7 +89,6 @@ public class AdminController {
 //        categoryService.saveCategory(category);
         return  "redirect:/admin/category";
     }
-
     @GetMapping("/deleteCategory/{id}")
     public String deleteCategory(@PathVariable int id,HttpSession session){
         Boolean deleteCategory = categoryService.deleteCategory(id);
@@ -122,22 +129,23 @@ public class AdminController {
         return  "redirect:/admin/category";
     }
 
-    @PostMapping("add-product")
-    public String saveProduct(@ModelAttribute Product product, @RequestParam("file") MultipartFile file, HttpSession session) throws IOException {
+    @PostMapping("/add-product")
+    @Transactional
+    public String saveProduct(@ModelAttribute Product product, @RequestParam("file") MultipartFile file, @RequestParam(value = "category_id", required = false) List<Integer> categoryIds, HttpSession session) throws IOException {
         String imageName = (file!=null && !file.isEmpty()) ? file.getOriginalFilename():"default.jpg";
         product.setImage(imageName);
         Boolean exitsProduct = productService.existProduct(product.getTen());
         if(exitsProduct){
             session.setAttribute("error","Tên sản phẩm bị trùng");
         }else{
-            Product saveProduct = productService.saveProduct(product);
+            Product saveProduct = productService.saveProductWithCategories(product,categoryIds);
             if(ObjectUtils.isEmpty(saveProduct)){
                 session.setAttribute("error","Thêm sản phẩm thất bại");
             }else{
                 if (file != null && !file.isEmpty()) {
                     File saveFile = new ClassPathResource("static").getFile();
 
-                    Path uploadDir = Paths.get(saveFile.getAbsolutePath(), "img", "category_img");
+                    Path uploadDir = Paths.get(saveFile.getAbsolutePath(), "img", "product_img");
 
                     if (!Files.exists(uploadDir)) {
                         Files.createDirectories(uploadDir);
@@ -158,6 +166,39 @@ public class AdminController {
         }else{
             session.setAttribute("error","Xóa sản phẩm thất bại");
         }
+        return  "redirect:/admin/product";
+    }
+    @PostMapping("/update-product")
+    public String updateProduct(@ModelAttribute Product product, @RequestParam("file") MultipartFile file, @RequestParam(value = "category_id", required = false) List<Integer> categoryIds,HttpSession session) throws IOException{
+        Product product1 = productService.getProduct(product.getId());
+        String imageName = file.isEmpty() ? product1.getImage():file.getOriginalFilename();
+        if(!ObjectUtils.isEmpty(product1)){
+            product1.setTen(product.getTen());
+            product1.setGia(product.getGia());
+            product1.setMota(product.getMota());
+            product1.setMa(product.getMa());
+            product1.setStatus(product.getStatus());
+            product1.setSlton(product.getSlton());
+            product1.setImage(imageName);
+        }
+        Product updateProduct = productService.saveProductWithCategories(product1,categoryIds);
+        if(!ObjectUtils.isEmpty(updateProduct)){
+            if (file != null && !file.isEmpty()) {
+                File saveFile = new ClassPathResource("static").getFile();
+
+                Path uploadDir = Paths.get(saveFile.getAbsolutePath(), "img", "product_img");
+
+                if (!Files.exists(uploadDir)) {
+                    Files.createDirectories(uploadDir);
+                }
+                Path path = uploadDir.resolve(file.getOriginalFilename());
+                Files.copy(file.getInputStream(), path, StandardCopyOption.REPLACE_EXISTING);
+            }
+            session.setAttribute("success","Sửa Sản Phẩm thành công");
+        }else{
+            session.setAttribute("error","Sửa sản phẩm thất bại");
+        }
+
         return  "redirect:/admin/product";
     }
 

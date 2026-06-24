@@ -1,12 +1,14 @@
 package com.example.demo.service;
 
 import com.example.demo.model.Product;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 
 public interface ProductService {
 
-    public Product saveProduct(Product product);
+    @Transactional
+    Product saveProductWithCategories(Product product, List<Integer> categoryIds);
 
     public List<Product> getAllProduct();
 

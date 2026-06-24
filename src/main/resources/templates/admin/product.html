@@ -137,83 +137,7 @@
 
             <!-- Dynamic List rendering -->
             <div id="products-list-container">
-                <div class="table-responsive">
-                    <table class="kfc-table">
-                        <thead>
-                        <tr>
-                            <th style="width: 35%">Sản Phẩm</th>
-                            <th style="width: 15%">Danh Mục</th>
-                            <th style="width: 15%">Giá Bán</th>
-                            <th style="width: 10%">Kho Hàng</th>
-                            <th style="width: 10%">Trạng Thái</th>
-                            <th style="width: 5%">Thao Tác</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-
-                        <tr class="table-row" th:each="product, c : ${product}">
-                            <td>
-                                <div class="product-cell">
-                                    <img class="product-img-thmb"
-                                         th:src="@{'/img/product_img/' + ${product.image}}"
-                                         onerror="this.onerror=null; this.src='/img/default.png';">
-                                    <div class="product-info-text">
-                                        <span class="product-name-lbl">[[${product.ten}]]</span>
-                                        <span class="product-code-lbl">[[${product.ma}]]</span>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>
-                                <span th:each="pc : ${product.productCategories}"
-
-                                      class="badge bg-secondary me-1"
-
-                                      th:text="${pc.category.ten}">
-                                </span>
-                            </td>
-                            <td class="font-bold price-text">[[${#numbers.formatDecimal(product.gia, 0, 'POINT', 0, 'COMMA')}]]đ</td>
-                            <td>
-        <span class="badge badge-info" style="cursor: pointer;" title="Nhấn để đổi" th:data-toggle-stock="|prod-${product.id}|">
-            [[${product.slton}]]
-        </span>
-                            </td>
-                            <td>
-                                <span th:if="${product.status > 0}" class="badge badge-success">Còn hàng</span>
-                                <span th:unless="${product.status > 0}" class="badge badge-danger">Hết hàng</span>
-                            </td>
-                            <td>
-                                <div class="action-buttons">
-                                    <button class="action-btn btn-edit-active btn-edit-product"
-                                            th:data-id="${product.id}"
-                                            th:data-ma="${product.ma}"
-                                            th:data-ten="${product.ten}"
-                                            th:data-gia="${product.gia}"
-                                            th:data-slton="${product.slton}"
-                                            th:data-status="${product.status}"
-                                            th:data-mota="${product.mota}"
-                                            th:data-image="${product.image}"
-                                            th:data-categories="${product.getCategoryIdsString()}"
-                                            title="Chỉnh Sửa">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"></path></svg>
-                                    </button>
-
-                                    <button class="action-btn btn-delete-active btn-delete-product"
-                                            th:data-id="${product.id}"
-                                            th:data-ten="${product.ten}"
-                                            th:data-gia="${product.gia}"
-                                            th:data-slton="${product.slton}"
-                                            th:data-status="${product.status}"
-                                            th:data-image="${product.image}"
-                                            th:data-mota="${product.mota}"
-                                            title="Xóa">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"></path></svg>
-                                    </button>
-                                </div>
-                            </td>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
+                <!-- Rendered via JS -->
             </div>
         </div>
     </main>
@@ -231,7 +155,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" style="width: 20px; height: 20px; fill: currentColor;"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
             </button>
         </div>
-        <form id="form-product" action="/admin/add-product" method="post" enctype="multipart/form-data">
+        <form id="form-product" action="/add-product" method="post" enctype="multipart/form-data">
             <div class="modal-body">
                 <input type="hidden" id="product-id" name="id">
 
@@ -246,12 +170,8 @@
                     </div>
                     <div class="form-group">
                         <label class="form-label" for="product-category">Danh Mục Thực Đơn <span class="required">*</span></label>
-<!--                        <select id="product-category" class="form-control" name="category_id" required>-->
-                        <select class="form-control" name="category_id" multiple required>
-                            <option th:each="cat, c : ${category}"
-                                    th:value="${cat.id}"
-                                    th:text="${cat.ten}">
-                            </option>
+                        <select id="product-category" class="form-control" name="category_id" required>
+                            <!-- Filled dynamically -->
                         </select>
                     </div>
                     <div class="form-group">
@@ -272,7 +192,6 @@
                     <div class="form-group form-group-full">
                         <label class="form-label" for="product-image">Đường dẫn hình ảnh (URL)</label>
                         <input type="file" id="product-image" class="form-control" name="file" >
-                        <input type="hidden" id="product-image-old">
                         <div class="image-preview-box">
                             <img id="product-img-preview" class="image-preview-img d-none" src="" alt="Hình ảnh sản phẩm">
                             <div id="product-img-placeholder" class="image-preview-placeholder">
@@ -315,6 +234,6 @@
 </div>
 
 <!-- Script module -->
-<script type="module" src="../js/products.js"></script>
+<script type="module" src="js/products.js"></script>
 </body>
 </html>
